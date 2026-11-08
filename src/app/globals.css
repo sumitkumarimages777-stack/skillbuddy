@@ -1,0 +1,70 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0f1222;
+  --color-night: #1b1f33;
+  --color-mist: #c9cbd6;
+  --color-brand: #2d3fe0;
+  --color-brand-dark: #1f2db0;
+  --color-brand-soft: #eceeff;
+  --color-brand-tint: #e1e4ff;
+  --color-sun: #ffcf3d;
+  --color-sun-soft: #fff4cc;
+  --color-sun-ink: #6b5300;
+  --color-leaf-soft: #e7f1ec;
+  --color-leaf-ink: #1e5a3a;
+  --color-paper: #fafaf7;
+  --color-line: #e6e6e1;
+  --color-line-soft: #efefea;
+  --color-line-strong: #d6d6d0;
+  --color-muted: #555a6b;
+  --color-body: #4a4f60;
+
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), var(--font-inter), sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+summary {
+  cursor: pointer;
+  list-style: none;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+details[open] .chev {
+  transform: rotate(180deg);
+}
+
+@utility container-page {
+  @apply mx-auto w-full max-w-[1200px] px-4 sm:px-6;
+}
+@utility eyebrow {
+  @apply text-sm font-semibold tracking-[0.06em] text-brand uppercase;
+}
+@utility h2 {
+  @apply font-display text-[32px] leading-[1.1] font-bold tracking-[-0.03em] sm:text-[42px];
+}
+@utility btn {
+  @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-[10px] px-[18px] py-3 text-[15px] font-semibold no-underline transition-colors disabled:cursor-not-allowed disabled:opacity-60;
+}
+@utility btn-primary {
+  @apply btn bg-brand text-white hover:bg-brand-dark;
+}
+@utility btn-outline {
+  @apply btn border border-line-strong bg-white text-ink hover:border-ink;
+}
+@utility btn-sun {
+  @apply btn bg-sun font-bold text-ink hover:brightness-95;
+}
+@utility input {
+  @apply w-full rounded-[10px] border-0 bg-white p-3.5 text-base text-ink outline-none focus-visible:ring-4 focus-visible:ring-sun/60;
+}
