@@ -16,7 +16,7 @@ export const demoSettings: SiteSettings = {
   announcement_link_label: "Visit DUBuddy",
   announcement_link_url: "https://dubuddy.in/",
   admissions_badge: "Admissions open for upcoming cohorts",
-  hero_title: "Learn ~~job~~ startup-ready skills in live cohorts, not recorded videos.",
+  hero_title: "Learn ~~job~~ startup-ready skills in live cohorts, ((not recorded videos.))",
   hero_highlight: "live cohorts",
   hero_subtitle:
     "Small-batch, mentor-led programs in Product, Design, Data, Marketing and AI. Learn live on weekends, build real projects, and get interview-ready while you're still in college.",

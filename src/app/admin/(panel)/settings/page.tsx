@@ -26,7 +26,7 @@ export default async function SettingsPage() {
         </Card>
         <Card title="Hero">
           <TextInput label="Badge" name="admissions_badge" defaultValue={s(st.admissions_badge)} placeholder="Admissions open for July cohorts" />
-          <TextInput label="Headline" name="hero_title" defaultValue={s(st.hero_title)} hint="Wrap words in ~~ to strike them through, e.g. Learn ~~job~~ startup-ready skills" />
+          <TextInput label="Headline" name="hero_title" defaultValue={s(st.hero_title)} hint="~~word~~ strikes a word through; ((text)) puts it on a smaller line, e.g. ((not recorded videos.))" />
           <TextInput label="Highlighted words" name="hero_highlight" defaultValue={s(st.hero_highlight)} hint="Must appear exactly in the headline; it gets the yellow marker." />
           <TextArea label="Subtitle" name="hero_subtitle" defaultValue={s(st.hero_subtitle)} />
           <TextInput label="Max learners per batch" name="max_batch_size" type="number" min={1} defaultValue={s(st.max_batch_size)} className="sm:w-64" hint="Shown in the dark “Why SkillBuddy” band." />

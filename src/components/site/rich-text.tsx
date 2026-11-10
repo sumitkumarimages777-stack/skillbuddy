@@ -20,6 +20,19 @@ function keepHyphenated(text: string, keyPrefix: string): ReactNode[] {
   );
 }
 
+/** Turns `((text))` into a smaller, quieter line under the headline. */
+function withSmall(text: string, keyPrefix: string): ReactNode[] {
+  return text.split(/\(\((.+?)\)\)/).flatMap((part, i) =>
+    i % 2 === 1 ? (
+      <span key={`${keyPrefix}${i}`} className="mt-3 block text-[0.5em] leading-tight font-semibold tracking-[-0.02em] text-muted">
+        {withStrikes(part, `${keyPrefix}${i}-`)}
+      </span>
+    ) : (
+      withStrikes(part, `${keyPrefix}${i}-`)
+    ),
+  );
+}
+
 /** Turns `~~word~~` into struck-through text. */
 function withStrikes(text: string, keyPrefix: string): ReactNode[] {
   return text.split(/~~(.+?)~~/).flatMap((part, i) =>
@@ -35,16 +48,17 @@ function withStrikes(text: string, keyPrefix: string): ReactNode[] {
 
 /**
  * Wraps the first occurrence of `highlight` in the yellow marker style from the design.
- * Text between `~~` is shown struck through (e.g. "Learn ~~job~~ startup-ready skills").
+ * Text between `~~` is shown struck through (e.g. "Learn ~~job~~ startup-ready skills"),
+ * and text between `((` and `))` goes on a smaller line (e.g. "((not recorded videos.))").
  */
 export function Highlighted({ text, highlight }: { text: string; highlight?: string | null }) {
   const i = highlight ? text.indexOf(highlight) : -1;
-  if (!highlight || i < 0) return <>{withStrikes(text, "a")}</>;
+  if (!highlight || i < 0) return <>{withSmall(text, "a")}</>;
   return (
     <>
-      {withStrikes(text.slice(0, i), "a")}
+      {withSmall(text.slice(0, i), "a")}
       <span className="rounded-lg bg-sun px-2 [box-decoration-break:clone]">{highlight}</span>
-      {withStrikes(text.slice(i + highlight.length), "b")}
+      {withSmall(text.slice(i + highlight.length), "b")}
     </>
   );
 }
