@@ -129,7 +129,7 @@ export default async function HomePage() {
                     {m.company && ` · ${m.company}`}
                   </span>
                 </div>
-                <span className="self-start rounded-full border border-line bg-paper px-2.5 py-[5px] text-xs font-semibold">
+                <span className="mt-auto self-start rounded-full border border-line bg-paper px-2.5 py-[5px] text-xs font-semibold">
                   {categoryLabel(categories, m.track)}
                 </span>
               </div>
