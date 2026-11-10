@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CourseGrid } from "@/components/site/course-grid";
+import { CourseJourney } from "@/components/site/course-journey";
 import { ArrowRight, Chevron } from "@/components/site/icons";
 import { LeadForm } from "@/components/site/lead-form";
 import { Highlighted, LimitedHtml } from "@/components/site/rich-text";
@@ -141,14 +141,14 @@ export default async function HomePage() {
       {/* Courses */}
       <section id="courses" className="scroll-mt-20 border-y border-line bg-white">
         <div className="container-page flex flex-col gap-8 py-16 sm:py-20">
-          <div className="flex max-w-[640px] flex-col gap-2.5">
+          <div className="flex flex-col gap-2.5">
             <span className="eyebrow">Programs</span>
-            <h2 className="h2">Pick a skill. Join a live cohort.</h2>
-            <p className="text-[17px] leading-relaxed text-body">
+            <h2 className="h2">Pick your vertical. Follow the journey.</h2>
+            <p className="max-w-[640px] text-[17px] leading-relaxed text-body">
               Every program runs as a live batch with a fixed start date, weekly deadlines and a mentor who reviews your work.
             </p>
           </div>
-          <CourseGrid courses={courses} categories={categories} />
+          <CourseJourney courses={courses} categories={categories} />
         </div>
       </section>
 
