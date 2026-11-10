@@ -74,11 +74,6 @@ export default async function HomePage() {
               Explore cohorts
             </a>
           </div>
-          <div className="flex flex-wrap gap-7 pt-2">
-            <Stat value="Live" label="weekend classes" />
-            {mentors.length > 0 && <Stat value={`${mentors.length}+`} label="industry mentors" />}
-            <Stat value="3–5" label="portfolio projects" />
-          </div>
         </div>
 
         <div className="flex min-w-0 flex-[1_1_380px] flex-col gap-[18px] rounded-[20px] border border-line bg-white p-5 shadow-[0_20px_40px_-24px_rgba(15,18,34,0.25)] sm:p-7">
@@ -105,12 +100,6 @@ export default async function HomePage() {
               <ArrowRight />
             </Link>
           ))}
-          <p className="text-[13px] text-muted">
-            Not sure which one fits?{" "}
-            <a href="#counsellor" className="font-semibold">
-              Talk to a counsellor
-            </a>
-          </p>
         </div>
       </section>
 
@@ -171,7 +160,7 @@ export default async function HomePage() {
         <section id="mentors" className="container-page flex scroll-mt-20 flex-col gap-9 py-16 sm:py-[88px]">
           <div className="flex max-w-[680px] flex-col gap-2.5">
             <span className="eyebrow">Mentors</span>
-            <h2 className="h2">Learn from people doing the job today.</h2>
+            <h2 className="h2">Learn from people who did it themselves.</h2>
           </div>
           <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,240px),1fr))] gap-5">
             {mentors.map((m) => (
@@ -266,15 +255,6 @@ export default async function HomePage() {
       </section>
 
       <SiteFooter courses={courses} companyName={settings.company_name} />
-    </div>
-  );
-}
-
-function Stat({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="flex flex-col gap-0.5">
-      <span className="font-display text-[26px] font-bold">{value}</span>
-      <span className="text-sm text-muted">{label}</span>
     </div>
   );
 }
