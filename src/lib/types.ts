@@ -11,6 +11,8 @@ export const DEFAULT_CATEGORIES: CategoryItem[] = [
   { id: "marketing", label: "Marketing", sort_order: 4 },
   { id: "creative", label: "Creative", sort_order: 5 },
   { id: "support", label: "Customer Support", sort_order: 6 },
+  { id: "finance", label: "Finance", sort_order: 7 },
+  { id: "hr", label: "HR", sort_order: 8 },
   { id: "design", label: "Design", sort_order: 6 },
   { id: "data", label: "Data", sort_order: 7 },
   { id: "ai", label: "AI", sort_order: 8 },
