@@ -96,9 +96,6 @@ export default async function CoursePage({ params }: PageProps<"/courses/[slug]"
               <a href="#fee" className="btn-primary rounded-xl py-[15px] text-base font-bold">
                 <ApplyLabel fallback="Apply now" />
               </a>
-              <a href="#call" className="btn-outline rounded-xl py-[13px]">
-                Talk to a counsellor
-              </a>
               <span className="text-center text-[13px] text-muted">{footnote}</span>
             </div>
           </div>
