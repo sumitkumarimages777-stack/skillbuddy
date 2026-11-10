@@ -37,6 +37,7 @@ export const isUuid = (v: string | null | undefined): v is string => !!v && /^[0
 export function errorMessage(error: { message: string; code?: string } | null, fallback = "Something went wrong.") {
   if (!error) return fallback;
   if (error.code === "23505") return "That value is already used (it must be unique).";
+  if (error.code === "23503") return "That item is linked to something that doesn't exist or is still in use.";
   if (error.code === "42501") return "You don't have permission to do that.";
   return error.message || fallback;
 }

@@ -5,9 +5,9 @@ import { LeadForm } from "@/components/site/lead-form";
 import { Highlighted, LimitedHtml } from "@/components/site/rich-text";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
-import { getCourses, getFaqs, getMentors, getReviews, getSettings } from "@/lib/data";
+import { getCategories, getCourses, getFaqs, getMentors, getReviews, getSettings } from "@/lib/data";
 import { formatDate, weeksLabel } from "@/lib/format";
-import { CATEGORIES } from "@/lib/types";
+import { categoryLabel } from "@/lib/types";
 
 // Rebuilt at most once a minute; admin saves revalidate immediately.
 export const revalidate = 60;
@@ -20,12 +20,13 @@ const STEPS = [
 ];
 
 export default async function HomePage() {
-  const [settings, courses, mentors, reviews, faqs] = await Promise.all([
+  const [settings, courses, mentors, reviews, faqs, categories] = await Promise.all([
     getSettings(),
     getCourses(),
     getMentors(),
     getReviews(),
     getFaqs(),
+    getCategories(),
   ]);
   const featured = courses.filter((c) => c.featured).slice(0, 4);
   const upcoming = featured.length ? featured : courses.slice(0, 4);
@@ -129,7 +130,7 @@ export default async function HomePage() {
                   </span>
                 </div>
                 <span className="self-start rounded-full border border-line bg-paper px-2.5 py-[5px] text-xs font-semibold">
-                  {CATEGORIES.find((c) => c.id === m.track)?.label}
+                  {categoryLabel(categories, m.track)}
                 </span>
               </div>
             ))}
@@ -147,7 +148,7 @@ export default async function HomePage() {
               Every program runs as a live batch with a fixed start date, weekly deadlines and a mentor who reviews your work.
             </p>
           </div>
-          <CourseGrid courses={courses} />
+          <CourseGrid courses={courses} categories={categories} />
         </div>
       </section>
 

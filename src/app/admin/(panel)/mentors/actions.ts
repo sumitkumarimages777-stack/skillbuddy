@@ -6,15 +6,14 @@ import { bool, errorMessage, int, isUuid, optStr, str } from "@/lib/admin/form";
 import type { ActionResult } from "@/lib/admin/result";
 import { uploadImage } from "@/lib/admin/upload";
 import { requireAdmin } from "@/lib/auth";
-import { CATEGORIES } from "@/lib/types";
 
 export async function saveMentor(_prev: ActionResult, fd: FormData): Promise<ActionResult> {
   const { supabase } = await requireAdmin();
   const id = str(fd, "id", 40);
   const name = str(fd, "name", 120);
   if (!name) return { ok: false, message: "Name is required." };
-  const track = str(fd, "track", 20);
-  if (!CATEGORIES.some((c) => c.id === track)) return { ok: false, message: "Pick a valid track." };
+  const track = str(fd, "track", 40);
+  if (!track) return { ok: false, message: "Pick a track." };
 
   let photoUrl = optStr(fd, "photo_url", 500);
   try {
@@ -41,6 +40,7 @@ export async function saveMentor(_prev: ActionResult, fd: FormData): Promise<Act
   const { data, error } = isNew
     ? await supabase.from("mentors").insert(mentor).select("id").single()
     : await supabase.from("mentors").update(mentor).eq("id", id).select("id").single();
+  if (error?.code === "23503") return { ok: false, message: "Pick a valid track." };
   if (error || !data) return { ok: false, message: errorMessage(error, "Could not save the mentor.") };
 
   revalidatePath("/", "layout");

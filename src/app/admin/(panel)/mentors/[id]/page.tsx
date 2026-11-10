@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ActionForm, ConfirmButton, SubmitButton } from "@/components/admin/action-form";
 import { Card, Checkbox, Select, TextArea, TextInput } from "@/components/admin/fields";
@@ -5,7 +6,8 @@ import { PageHeader } from "@/components/admin/page-header";
 import { PhotoPositionField } from "@/components/admin/photo-position-field";
 import { isUuid } from "@/lib/admin/form";
 import { requireAdmin } from "@/lib/auth";
-import { CATEGORIES, type Mentor } from "@/lib/types";
+import { categoryOptions, loadCategories } from "@/lib/admin/categories";
+import type { Mentor } from "@/lib/types";
 import { deleteMentor, saveMentor } from "../actions";
 
 export const metadata = { title: "Edit mentor" };
@@ -14,13 +16,14 @@ export default async function EditMentorPage({ params }: PageProps<"/admin/mento
   const { id } = await params;
   const { supabase } = await requireAdmin();
   const isNew = id === "new";
-  let m: Partial<Mentor> = { track: "product", published: true, sort_order: 0, photo_position_y: 50 };
+  let m: Partial<Mentor> = { published: true, sort_order: 0, photo_position_y: 50 };
   if (!isNew) {
     if (!isUuid(id)) notFound();
     const { data } = await supabase.from("mentors").select("*").eq("id", id).maybeSingle();
     if (!data) notFound();
     m = data as Mentor;
   }
+  const categories = await loadCategories(supabase);
   const s = (v: unknown) => (v == null ? "" : String(v));
 
   return (
@@ -32,7 +35,7 @@ export default async function EditMentorPage({ params }: PageProps<"/admin/mento
         <Card>
           <div className="grid gap-4 sm:grid-cols-2">
             <TextInput label="Name" name="name" required defaultValue={s(m.name)} />
-            <Select label="Track" name="track" defaultValue={s(m.track)} options={CATEGORIES.map((c) => ({ value: c.id, label: c.label }))} />
+            <Select label="Track" name="track" defaultValue={s(m.track ?? categories[0]?.id)} options={categoryOptions(categories)} hint={<Link href="/admin/categories">Manage categories</Link>} />
             <TextInput label="Role" name="role" defaultValue={s(m.role)} placeholder="Senior Product Manager" />
             <TextInput label="Company" name="company" defaultValue={s(m.company)} />
             <TextInput label="LinkedIn URL" name="linkedin_url" type="url" defaultValue={s(m.linkedin_url)} />

@@ -1,12 +1,19 @@
-export const CATEGORIES = [
-  { id: "product", label: "Product" },
-  { id: "design", label: "Design" },
-  { id: "data", label: "Data" },
-  { id: "marketing", label: "Marketing" },
-  { id: "ai", label: "AI" },
-] as const;
+/** Category id (slug). Categories are managed in the admin panel (`categories` table). */
+export type Category = string;
 
-export type Category = (typeof CATEGORIES)[number]["id"];
+export type CategoryItem = { id: Category; label: string; sort_order: number };
+
+/** Default categories, used in demo mode and as a fallback if the table can't be read. */
+export const DEFAULT_CATEGORIES: CategoryItem[] = [
+  { id: "product", label: "Product", sort_order: 1 },
+  { id: "design", label: "Design", sort_order: 2 },
+  { id: "data", label: "Data", sort_order: 3 },
+  { id: "marketing", label: "Marketing", sort_order: 4 },
+  { id: "ai", label: "AI", sort_order: 5 },
+];
+
+export const categoryLabel = (categories: CategoryItem[], id: string | null | undefined) =>
+  categories.find((c) => c.id === id)?.label ?? id ?? "";
 
 export const LEAD_STATUSES = ["new", "contacted", "converted", "closed"] as const;
 export type LeadStatus = (typeof LEAD_STATUSES)[number];

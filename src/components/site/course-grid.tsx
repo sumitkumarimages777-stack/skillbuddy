@@ -3,13 +3,11 @@
 import Link from "next/link";
 import { useState } from "react";
 import { formatDate, formatPrice, weeksLabel } from "@/lib/format";
-import { CATEGORIES, type Category, type Course } from "@/lib/types";
+import { categoryLabel, type Category, type CategoryItem, type Course } from "@/lib/types";
 
-const TABS: { id: "all" | Category; label: string }[] = [{ id: "all", label: "All programs" }, ...CATEGORIES];
-
-export function CourseGrid({ courses }: { courses: Course[] }) {
+export function CourseGrid({ courses, categories }: { courses: Course[]; categories: CategoryItem[] }) {
   const [cat, setCat] = useState<"all" | Category>("all");
-  const tabs = TABS.filter((t) => t.id === "all" || courses.some((c) => c.category === t.id));
+  const tabs: { id: "all" | Category; label: string }[] = [{ id: "all", label: "All programs" }, ...categories].filter((t) => t.id === "all" || courses.some((c) => c.category === t.id));
   const shown = cat === "all" ? courses : courses.filter((c) => c.category === cat);
 
   return (
@@ -41,7 +39,7 @@ export function CourseGrid({ courses }: { courses: Course[] }) {
             <article key={c.id} className="flex flex-col gap-4 rounded-[18px] border border-line bg-paper p-[26px]">
               <div className="flex items-center justify-between gap-3">
                 <span className="rounded-full bg-brand-soft px-2.5 py-[5px] text-[13px] font-semibold text-brand-dark">
-                  {CATEGORIES.find((x) => x.id === c.category)?.label}
+                  {categoryLabel(categories, c.category)}
                 </span>
                 <span className="text-[13px] text-muted">{weeksLabel(c.duration_weeks)}</span>
               </div>

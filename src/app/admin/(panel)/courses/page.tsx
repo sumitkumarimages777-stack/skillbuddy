@@ -2,14 +2,18 @@ import Link from "next/link";
 import { EmptyState, PageHeader, StatusBadge } from "@/components/admin/page-header";
 import { requireAdmin } from "@/lib/auth";
 import { formatDate, formatPrice } from "@/lib/format";
-import { CATEGORIES, type Course } from "@/lib/types";
+import { loadCategories } from "@/lib/admin/categories";
+import { categoryLabel, type Course } from "@/lib/types";
 import { toggleCoursePublished } from "./actions";
 
 export const metadata = { title: "Courses" };
 
 export default async function CoursesPage() {
   const { supabase } = await requireAdmin();
-  const { data } = await supabase.from("courses").select("*, applications(count)").order("sort_order").order("created_at");
+  const [{ data }, categories] = await Promise.all([
+    supabase.from("courses").select("*, applications(count)").order("sort_order").order("created_at"),
+    loadCategories(supabase),
+  ]);
   const courses = (data ?? []) as (Course & { applications: { count: number }[] })[];
 
   return (
@@ -46,7 +50,7 @@ export default async function CoursesPage() {
                       {c.title}
                     </Link>
                     <div className="text-xs text-muted">
-                      {CATEGORIES.find((x) => x.id === c.category)?.label} · /courses/{c.slug}
+                      {categoryLabel(categories, c.category)} · /courses/{c.slug}
                       {c.featured && " · Featured"}
                     </div>
                   </td>

@@ -7,7 +7,7 @@ import { bool, date, errorMessage, int, isUuid, jsonList, optStr, str } from "@/
 import type { ActionResult } from "@/lib/admin/result";
 import { requireAdmin } from "@/lib/auth";
 import { slugify } from "@/lib/format";
-import { CATEGORIES, PROJECT_ACCENTS } from "@/lib/types";
+import { PROJECT_ACCENTS } from "@/lib/types";
 
 type Row = Record<string, string | undefined>;
 
@@ -54,8 +54,8 @@ export async function saveCourse(_prev: ActionResult, fd: FormData): Promise<Act
   if (!title) return { ok: false, message: "Title is required." };
   const slug = slugify(str(fd, "slug", 80) || title);
   if (!slug) return { ok: false, message: "Slug must contain letters or numbers." };
-  const category = str(fd, "category", 20);
-  if (!CATEGORIES.some((c) => c.id === category)) return { ok: false, message: "Pick a valid category." };
+  const category = str(fd, "category", 40);
+  if (!category) return { ok: false, message: "Pick a category." };
   const leadMentor = str(fd, "lead_mentor_id", 40);
   const discount = int(fd, "dubuddy_discount");
 
@@ -91,6 +91,7 @@ export async function saveCourse(_prev: ActionResult, fd: FormData): Promise<Act
   const { data, error } = isNew
     ? await supabase.from("courses").insert(course).select("id").single()
     : await supabase.from("courses").update(course).eq("id", id).select("id").single();
+  if (error?.code === "23503") return { ok: false, message: "Pick a valid category." };
   if (error || !data) return { ok: false, message: errorMessage(error, "Could not save the course.") };
   const courseId = data.id as string;
 

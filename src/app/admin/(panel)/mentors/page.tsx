@@ -1,13 +1,17 @@
 import Link from "next/link";
 import { EmptyState, PageHeader, StatusBadge } from "@/components/admin/page-header";
 import { requireAdmin } from "@/lib/auth";
-import { CATEGORIES, type Mentor } from "@/lib/types";
+import { loadCategories } from "@/lib/admin/categories";
+import { categoryLabel, type Mentor } from "@/lib/types";
 
 export const metadata = { title: "Mentors" };
 
 export default async function MentorsPage() {
   const { supabase } = await requireAdmin();
-  const { data } = await supabase.from("mentors").select("*").order("sort_order").order("created_at");
+  const [{ data }, categories] = await Promise.all([
+    supabase.from("mentors").select("*").order("sort_order").order("created_at"),
+    loadCategories(supabase),
+  ]);
   const mentors = (data ?? []) as Mentor[];
   return (
     <>
@@ -32,7 +36,7 @@ export default async function MentorsPage() {
                 <span className="truncate font-semibold">{m.name}</span>
                 <span className="truncate text-xs text-muted">
                   {m.role}
-                  {m.company && ` · ${m.company}`} · {CATEGORIES.find((c) => c.id === m.track)?.label}
+                  {m.company && ` · ${m.company}`} · {categoryLabel(categories, m.track)}
                 </span>
               </div>
               <StatusBadge status={m.published ? "published" : "draft"} />

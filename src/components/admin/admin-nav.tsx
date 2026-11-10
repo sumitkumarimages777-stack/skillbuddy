@@ -9,6 +9,7 @@ const LINKS = [
   { href: "/admin/leads", label: "Call-back leads" },
   { href: "/admin/courses", label: "Courses" },
   { href: "/admin/mentors", label: "Mentors" },
+  { href: "/admin/categories", label: "Categories" },
   { href: "/admin/reviews", label: "Reviews" },
   { href: "/admin/faqs", label: "FAQs" },
   { href: "/admin/settings", label: "Site settings" },

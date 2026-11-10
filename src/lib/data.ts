@@ -2,7 +2,8 @@ import "server-only";
 import { demoCourses, demoFaqs, demoMentors, demoReviews, demoSettings } from "./demo-data";
 import { isSupabaseConfigured } from "./supabase/env";
 import { createPublicClient } from "./supabase/server";
-import type { Course, CourseDetail, Faq, Mentor, Review, SiteSettings } from "./types";
+import { DEFAULT_CATEGORIES } from "./types";
+import type { CategoryItem, Course, CourseDetail, Faq, Mentor, Review, SiteSettings } from "./types";
 
 /* Public, read-only queries. RLS limits results to published rows. */
 
@@ -13,6 +14,13 @@ export async function getSettings(): Promise<SiteSettings> {
   const { data, error } = await createPublicClient().from("site_settings").select("*").eq("id", 1).maybeSingle();
   if (error) console.error("getSettings", error.message);
   return { ...demoSettings, ...(data ?? {}) };
+}
+
+export async function getCategories(): Promise<CategoryItem[]> {
+  if (!isSupabaseConfigured) return DEFAULT_CATEGORIES;
+  const { data, error } = await createPublicClient().from("categories").select("id, label, sort_order").order("sort_order").order("label");
+  if (error) console.error("getCategories", error.message);
+  return data && data.length ? (data as CategoryItem[]) : DEFAULT_CATEGORIES;
 }
 
 export async function getCourses(): Promise<Course[]> {

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ActionForm, ConfirmButton, SubmitButton } from "@/components/admin/action-form";
 import { Card, Checkbox, Select, TextArea, TextInput } from "@/components/admin/fields";
@@ -5,7 +6,8 @@ import { ListEditor, StringListEditor } from "@/components/admin/list-editor";
 import { PageHeader } from "@/components/admin/page-header";
 import { isUuid } from "@/lib/admin/form";
 import { requireAdmin } from "@/lib/auth";
-import { CATEGORIES, PROJECT_ACCENTS, type CourseDetail, type Mentor } from "@/lib/types";
+import { categoryOptions, loadCategories } from "@/lib/admin/categories";
+import { PROJECT_ACCENTS, type CourseDetail, type Mentor } from "@/lib/types";
 import { deleteCourse, saveCourse } from "../actions";
 
 export const metadata = { title: "Edit course" };
@@ -19,7 +21,6 @@ export default async function EditCoursePage({ params, searchParams }: PageProps
   const isNew = id === "new";
 
   let course: Partial<CourseDetail> = {
-    category: "product",
     format: "Live online, weekends",
     mode: "Live · Weekends",
     effort: "8–10 hrs / week",
@@ -45,7 +46,10 @@ export default async function EditCoursePage({ params, searchParams }: PageProps
     if (!data) notFound();
     course = data as CourseDetail;
   }
-  const { data: mentorRows } = await supabase.from("mentors").select("id, name, role, company").order("sort_order");
+  const [{ data: mentorRows }, categories] = await Promise.all([
+    supabase.from("mentors").select("id, name, role, company").order("sort_order"),
+    loadCategories(supabase),
+  ]);
   const mentors = (mentorRows ?? []) as Pick<Mentor, "id" | "name" | "role" | "company">[];
 
   const s = (v: unknown) => (v == null ? "" : String(v));
@@ -76,7 +80,7 @@ export default async function EditCoursePage({ params, searchParams }: PageProps
             <TextInput label="URL slug" name="slug" defaultValue={s(course.slug)} placeholder="product-management" hint="Leave blank to generate from the title. Page lives at /courses/<slug>." />
             <TextInput label="Short title" name="short_title" defaultValue={s(course.short_title)} placeholder="Product Management" hint="Used in the Upcoming list and footer." />
             <TextInput label="Short code" name="short_code" maxLength={4} defaultValue={s(course.short_code)} placeholder="PM" hint="2–4 letters for the badge." />
-            <Select label="Category" name="category" defaultValue={s(course.category)} options={CATEGORIES.map((c) => ({ value: c.id, label: c.label }))} />
+            <Select label="Category" name="category" defaultValue={s(course.category ?? categories[0]?.id)} options={categoryOptions(categories)} hint={<Link href="/admin/categories">Manage categories</Link>} />
             <TextInput label="Sort order" name="sort_order" type="number" defaultValue={s(course.sort_order)} hint="Lower numbers show first." />
           </div>
           <TextArea label="Card blurb" name="blurb" rows={2} defaultValue={s(course.blurb)} hint="One or two sentences shown on the program card." />
