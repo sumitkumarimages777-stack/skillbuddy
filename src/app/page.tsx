@@ -111,20 +111,20 @@ export default async function HomePage() {
             <span className="eyebrow">Mentors</span>
             <h2 className="h2">Learn from people who did it themselves.</h2>
           </div>
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,240px),1fr))] gap-5">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {mentors.map((m) => (
-              <div key={m.id} className="flex flex-col gap-3.5 rounded-[18px] border border-line bg-white p-[22px]">
+              <div key={m.id} className="flex flex-col gap-3 rounded-[16px] border border-line bg-white p-4">
                 {m.photo_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={m.photo_url} alt={m.name} className="h-[180px] w-full rounded-xl object-cover" style={{ objectPosition: `50% ${m.photo_position_y ?? 50}%` }} />
+                  <img src={m.photo_url} alt={m.name} className="h-[160px] w-full rounded-xl object-cover" style={{ objectPosition: `50% ${m.photo_position_y ?? 50}%` }} />
                 ) : (
-                  <div className="flex h-[180px] items-center justify-center rounded-xl bg-brand-soft font-display text-4xl font-bold text-brand-dark">
+                  <div className="flex h-[160px] items-center justify-center rounded-xl bg-brand-soft font-display text-4xl font-bold text-brand-dark">
                     {initials(m.name)}
                   </div>
                 )}
                 <div className="flex flex-col gap-1">
-                  <span className="font-display text-lg font-bold">{m.name}</span>
-                  <span className="text-sm text-muted">
+                  <span className="font-display text-base font-bold">{m.name}</span>
+                  <span className="text-[13px] text-muted">
                     {m.role}
                     {m.company && ` · ${m.company}`}
                   </span>
