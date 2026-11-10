@@ -48,9 +48,9 @@ export default async function HomePage() {
         homeHref="#top"
         cta={{ href: "#courses", label: "Apply now" }}
         links={[
+          { href: "#mentors", label: "Mentors" },
           { href: "#courses", label: "Courses" },
           { href: "#how", label: "How cohorts work" },
-          { href: "#mentors", label: "Mentors" },
           { href: "#reviews", label: "Reviews" },
           { href: "#faqs", label: "FAQs" },
         ]}
@@ -103,6 +103,40 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Mentors */}
+      {mentors.length > 0 && (
+        <section id="mentors" className="container-page flex scroll-mt-20 flex-col gap-9 pt-6 pb-16 sm:pt-8 sm:pb-[88px]">
+          <div className="flex max-w-[680px] flex-col gap-2.5">
+            <span className="eyebrow">Mentors</span>
+            <h2 className="h2">Learn from people who did it themselves.</h2>
+          </div>
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,240px),1fr))] gap-5">
+            {mentors.map((m) => (
+              <div key={m.id} className="flex flex-col gap-3.5 rounded-[18px] border border-line bg-white p-[22px]">
+                {m.photo_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={m.photo_url} alt={m.name} className="h-[180px] w-full rounded-xl object-cover" />
+                ) : (
+                  <div className="flex h-[180px] items-center justify-center rounded-xl bg-brand-soft font-display text-4xl font-bold text-brand-dark">
+                    {initials(m.name)}
+                  </div>
+                )}
+                <div className="flex flex-col gap-1">
+                  <span className="font-display text-lg font-bold">{m.name}</span>
+                  <span className="text-sm text-muted">
+                    {m.role}
+                    {m.company && ` · ${m.company}`}
+                  </span>
+                </div>
+                <span className="self-start rounded-full border border-line bg-paper px-2.5 py-[5px] text-xs font-semibold">
+                  {CATEGORIES.find((c) => c.id === m.track)?.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* Courses */}
       <section id="courses" className="scroll-mt-20 border-y border-line bg-white">
         <div className="container-page flex flex-col gap-8 py-16 sm:py-20">
@@ -154,40 +188,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Mentors */}
-      {mentors.length > 0 && (
-        <section id="mentors" className="container-page flex scroll-mt-20 flex-col gap-9 py-16 sm:py-[88px]">
-          <div className="flex max-w-[680px] flex-col gap-2.5">
-            <span className="eyebrow">Mentors</span>
-            <h2 className="h2">Learn from people who did it themselves.</h2>
-          </div>
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,240px),1fr))] gap-5">
-            {mentors.map((m) => (
-              <div key={m.id} className="flex flex-col gap-3.5 rounded-[18px] border border-line bg-white p-[22px]">
-                {m.photo_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={m.photo_url} alt={m.name} className="h-[180px] w-full rounded-xl object-cover" />
-                ) : (
-                  <div className="flex h-[180px] items-center justify-center rounded-xl bg-brand-soft font-display text-4xl font-bold text-brand-dark">
-                    {initials(m.name)}
-                  </div>
-                )}
-                <div className="flex flex-col gap-1">
-                  <span className="font-display text-lg font-bold">{m.name}</span>
-                  <span className="text-sm text-muted">
-                    {m.role}
-                    {m.company && ` · ${m.company}`}
-                  </span>
-                </div>
-                <span className="self-start rounded-full border border-line bg-paper px-2.5 py-[5px] text-xs font-semibold">
-                  {CATEGORIES.find((c) => c.id === m.track)?.label}
-                </span>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
 
       {/* Reviews */}
       {reviews.length > 0 && (
