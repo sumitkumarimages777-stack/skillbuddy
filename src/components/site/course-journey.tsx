@@ -6,7 +6,9 @@ import { formatDate, weeksLabel } from "@/lib/format";
 import type { CategoryItem, Course } from "@/lib/types";
 
 type RingId = "product" | "engineering" | "operations" | "marketing" | "support";
-type NodeId = RingId | "business" | "creative";
+type SideId = "finance" | "hr";
+type ExtraId = "business" | "creative" | SideId;
+type NodeId = RingId | ExtraId;
 
 /** The product loop, in the order the ball travels. Ids match the `categories` table. */
 const RING: { id: RingId; label: string; step: string; caption: string; blurb: string }[] = [
@@ -47,7 +49,7 @@ const RING: { id: RingId; label: string; step: string; caption: string; blurb: s
   },
 ];
 
-const EXTRA: Record<"business" | "creative", { label: string; blurb: string }> = {
+const EXTRA: Record<ExtraId, { label: string; blurb: string; items?: string[] }> = {
   business: {
     label: "Business",
     blurb: "Every team in the loop exists to serve the business: a customer problem worth solving, and a company that makes money solving it.",
@@ -56,7 +58,20 @@ const EXTRA: Record<"business" | "creative", { label: string; blurb: string }> =
     label: "Creative",
     blurb: "The craft layer that feeds the loop: UI/UX for Product, and editing, banners, posters and design for Marketing.",
   },
+  finance: {
+    label: "Finance",
+    blurb: "Keeps the money side of the business in order, so every team can keep building.",
+    items: ["Salaries", "Budget approval", "GST filings"],
+  },
+  hr: {
+    label: "HR",
+    blurb: "Finds, hires and looks after the people who run every team in the loop.",
+    items: ["Hiring", "Onboarding", "People & culture"],
+  },
 };
+
+/** Teams that support the whole business, drawn beside the loop and linked to Business. */
+const SIDE: SideId[] = ["finance", "hr"];
 
 const CREATIVE_LINKS: { to: "product" | "marketing"; label: string }[] = [
   { to: "product", label: "UI/UX" },
@@ -81,11 +96,13 @@ type Layout = {
   creative: [number, number];
   /** Quadratic-curve control point for Creative → Product / Marketing, and where each label sits. */
   curves: Record<"product" | "marketing", { c: [number, number]; label: [number, number]; anchor: "start" | "middle" | "end"; text: string }>;
+  /** Finance / HR: position, curve control point towards Business, and a label pill under the circle. */
+  side: Record<SideId, { pos: [number, number]; c: [number, number]; label: [number, number]; text: string }>;
 };
 
 const DESKTOP: Layout = {
-  w: 900,
-  h: 660,
+  w: 1110,
+  h: 680,
   cx: 590,
   cy: 330,
   R: 232,
@@ -97,11 +114,15 @@ const DESKTOP: Layout = {
     product: { c: [170, 110], label: [228, 172], anchor: "middle", text: "UI/UX" },
     marketing: { c: [170, 560], label: [262, 506], anchor: "middle", text: "Editing · Banners · Posters · Design" },
   },
+  side: {
+    finance: { pos: [995, 150], c: [860, 330], label: [995, 250], text: "Salaries · Budgets · GST" },
+    hr: { pos: [995, 510], c: [860, 330], label: [995, 610], text: "Hiring · Onboarding" },
+  },
 };
 
 const MOBILE: Layout = {
   w: 360,
-  h: 500,
+  h: 630,
   cx: 210,
   cy: 222,
   R: 116,
@@ -112,6 +133,10 @@ const MOBILE: Layout = {
   curves: {
     product: { c: [-34, 226], label: [36, 330], anchor: "middle", text: "UI/UX" },
     marketing: { c: [130, 420], label: [116, 410], anchor: "start", text: "Editing · Posters" },
+  },
+  side: {
+    finance: { pos: [200, 548], c: [262, 360], label: [200, 604], text: "Salaries · GST" },
+    hr: { pos: [310, 548], c: [262, 360], label: [310, 604], text: "Hiring" },
   },
 };
 
@@ -307,6 +332,42 @@ function JourneyMap({
         );
       })}
 
+      {/* Finance and HR support the whole business */}
+      {SIDE.map((id) => {
+        const cfg = l.side[id];
+        const on = selected === id || selected === "business";
+        const fs = l.font - 6 < 10 ? 10 : l.font - 6;
+        const textW = cfg.text.length * fs * 0.52;
+        const padX = Math.round(fs * 0.7);
+        const [lx, ly] = cfg.label;
+        return (
+          <g key={`side-${id}`}>
+            <path
+              d={`M ${cfg.pos[0]} ${cfg.pos[1]} Q ${cfg.c[0]} ${cfg.c[1]} ${l.cx} ${l.cy}`}
+              fill="none"
+              strokeWidth={on ? 2.2 : 1.5}
+              strokeDasharray="6 7"
+              strokeLinecap="round"
+              className={on ? "stroke-brand motion-safe:animate-[journey-dash_0.9s_linear_infinite]" : "stroke-line-strong"}
+            />
+            <g aria-hidden="true">
+              <rect
+                x={lx - textW / 2 - padX}
+                y={ly - fs * 0.95}
+                width={textW + padX * 2}
+                height={fs * 1.9}
+                rx={fs * 0.95}
+                strokeWidth={1}
+                className={on ? "fill-brand-soft stroke-brand" : "fill-white stroke-line"}
+              />
+              <text x={lx} y={ly} textAnchor="middle" dominantBaseline="central" fontSize={fs} className={`font-sans font-semibold ${on ? "fill-brand-dark" : "fill-muted"}`}>
+                {cfg.text}
+              </text>
+            </g>
+          </g>
+        );
+      })}
+
       {/* The ball (drawn under the circles, so each team "catches" it) */}
       <g aria-hidden="true" className="pointer-events-none">
         <ellipse cx={shadowX} cy={shadowY + ballR * 0.9} rx={ballR * (1 - (lift / (l.R - rest)) * 0.5)} ry={ballR * 0.32} className="fill-ink/15" />
@@ -315,6 +376,7 @@ function JourneyMap({
       </g>
       {node("business", l.cx, l.cy, l.hubR, { dark: true })}
       {node("creative", l.creative[0], l.creative[1], l.nodeR, { dashed: true })}
+      {SIDE.map((id) => node(id, l.side[id].pos[0], l.side[id].pos[1], l.nodeR, { dashed: true }))}
       {RING.map((n, i) => node(n.id, ringPos[n.id][0], ringPos[n.id][1], l.nodeR, { glow: !ball.moving && ball.step === i }))}
 
     </svg>
@@ -354,9 +416,9 @@ export function CourseJourney({ courses, categories }: { courses: Course[]; cate
   };
 
   const ball = ballAt(elapsed);
-  const allIds: NodeId[] = [...RING.map((n) => n.id), "business", "creative"];
+  const allIds: NodeId[] = [...RING.map((n) => n.id), "business", "creative", ...SIDE];
   const byNode = Object.fromEntries(allIds.map((id) => [id, courses.filter((c) => c.category === id)])) as Record<NodeId, Course[]>;
-  const fallback = (id: NodeId) => (id === "business" || id === "creative" ? EXTRA[id].label : RING.find((n) => n.id === id)!.label);
+  const fallback = (id: NodeId) => (id in EXTRA ? EXTRA[id as ExtraId].label : RING.find((n) => n.id === id)!.label);
   const labels = Object.fromEntries(allIds.map((id) => [id, categories.find((c) => c.id === id)?.label ?? fallback(id)])) as Record<NodeId, string>;
   const subs = Object.fromEntries(
     allIds.map((id) => {
@@ -370,7 +432,8 @@ export function CourseJourney({ courses, categories }: { courses: Course[]; cate
   const others = courses.filter((c) => !mapped.has(c.category));
 
   const ringNode = RING.find((n) => n.id === selected);
-  const blurb = ringNode ? ringNode.blurb : EXTRA[selected as "business" | "creative"].blurb;
+  const extra = ringNode ? undefined : EXTRA[selected as ExtraId];
+  const blurb = ringNode ? ringNode.blurb : extra!.blurb;
   const nodeCourses = byNode[selected];
   const current = RING[ball.step];
 
@@ -435,23 +498,33 @@ export function CourseJourney({ courses, categories }: { courses: Course[]; cate
         </div>
 
         <div aria-live="polite" className="flex flex-col gap-4 rounded-[20px] border border-line bg-white p-6 lg:sticky lg:top-24">
-          <span className="eyebrow">{selected === "business" ? "The core" : selected === "creative" ? "Feeds the loop" : "Vertical"}</span>
+          <span className="eyebrow">{selected === "business" ? "The core" : selected === "creative" ? "Feeds the loop" : extra?.items ? "Supports the business" : "Vertical"}</span>
           <h3 className="font-display text-2xl font-bold tracking-[-0.02em]">{labels[selected]}</h3>
           <p className="text-[15px] leading-relaxed text-body">{blurb}</p>
 
           {selected === "business" && (
             <div className="flex flex-wrap gap-2">
-              {RING.map((n) => (
+              {[...RING.map((n) => n.id), ...SIDE].map((id) => (
                 <button
-                  key={n.id}
+                  key={id}
                   type="button"
-                  onClick={() => select(n.id)}
+                  onClick={() => select(id)}
                   className="cursor-pointer rounded-full border border-line-strong bg-white px-3.5 py-1.5 text-sm font-medium text-ink hover:border-ink"
                 >
-                  {labels[n.id]}
+                  {labels[id]}
                 </button>
               ))}
             </div>
+          )}
+
+          {extra?.items && (
+            <ul className="flex flex-wrap gap-2">
+              {extra.items.map((item) => (
+                <li key={item} className="rounded-full border border-line bg-paper px-3.5 py-1.5 text-sm font-semibold text-ink">
+                  {item}
+                </li>
+              ))}
+            </ul>
           )}
 
           {selected === "creative" && (
