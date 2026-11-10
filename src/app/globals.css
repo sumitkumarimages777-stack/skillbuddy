@@ -24,6 +24,12 @@
   --font-display: var(--font-space-grotesk), var(--font-inter), sans-serif;
 }
 
+@keyframes journey-dash {
+  to {
+    stroke-dashoffset: -26;
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }
