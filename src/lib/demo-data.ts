@@ -16,8 +16,8 @@ export const demoSettings: SiteSettings = {
   announcement_link_label: "Visit DUBuddy",
   announcement_link_url: "https://dubuddy.in/",
   admissions_badge: "Aim high to succeed in life",
-  hero_title: "Learn ~~job~~ startup-ready skills in live cohorts, ((not recorded videos.))",
-  hero_highlight: "live cohorts",
+  hero_title: "Learn ~~job~~ startup-ready skills in personalised cohorts, ((not recorded videos.))",
+  hero_highlight: "personalised cohorts",
   hero_subtitle:
     "Learn from the DUBuddy founding team, who built it through hands-on, practical learning.",
   max_batch_size: null,
