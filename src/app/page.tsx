@@ -107,7 +107,7 @@ export default async function HomePage() {
       {/* Mentors */}
       {mentors.length > 0 && (
         <section id="mentors" className="container-page flex scroll-mt-20 flex-col gap-9 pt-6 pb-16 sm:pt-8 sm:pb-[88px]">
-          <div className="flex max-w-[680px] flex-col gap-2.5">
+          <div className="flex flex-col gap-2.5">
             <span className="eyebrow">Mentors</span>
             <h2 className="h2">Learn from people who did it themselves.</h2>
           </div>
