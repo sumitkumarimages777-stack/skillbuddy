@@ -6,10 +6,13 @@ export type CategoryItem = { id: Category; label: string; sort_order: number };
 /** Default categories, used in demo mode and as a fallback if the table can't be read. */
 export const DEFAULT_CATEGORIES: CategoryItem[] = [
   { id: "product", label: "Product", sort_order: 1 },
-  { id: "design", label: "Design", sort_order: 2 },
-  { id: "data", label: "Data", sort_order: 3 },
+  { id: "engineering", label: "Engineering", sort_order: 2 },
+  { id: "operations", label: "Operations", sort_order: 3 },
   { id: "marketing", label: "Marketing", sort_order: 4 },
-  { id: "ai", label: "AI", sort_order: 5 },
+  { id: "creative", label: "Creative", sort_order: 5 },
+  { id: "design", label: "Design", sort_order: 6 },
+  { id: "data", label: "Data", sort_order: 7 },
+  { id: "ai", label: "AI", sort_order: 8 },
 ];
 
 export const categoryLabel = (categories: CategoryItem[], id: string | null | undefined) =>
