@@ -15,7 +15,7 @@ export const demoSettings: SiteSettings = {
   announcement_html: "From the team behind <strong>DUBuddy</strong> — trusted by 2 lakh+ students every year.",
   announcement_link_label: "Visit DUBuddy",
   announcement_link_url: "https://dubuddy.in/",
-  admissions_badge: "Admissions open for upcoming cohorts",
+  admissions_badge: "Aim high to succeed in life",
   hero_title: "Learn ~~job~~ startup-ready skills in live cohorts, ((not recorded videos.))",
   hero_highlight: "live cohorts",
   hero_subtitle:
