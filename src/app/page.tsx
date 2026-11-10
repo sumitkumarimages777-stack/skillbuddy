@@ -115,7 +115,7 @@ export default async function HomePage() {
               <div key={m.id} className="flex flex-col gap-3.5 rounded-[18px] border border-line bg-white p-[22px]">
                 {m.photo_url ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={m.photo_url} alt={m.name} className="h-[180px] w-full rounded-xl object-cover" />
+                  <img src={m.photo_url} alt={m.name} className="h-[180px] w-full rounded-xl object-cover" style={{ objectPosition: `50% ${m.photo_position_y ?? 50}%` }} />
                 ) : (
                   <div className="flex h-[180px] items-center justify-center rounded-xl bg-brand-soft font-display text-4xl font-bold text-brand-dark">
                     {initials(m.name)}

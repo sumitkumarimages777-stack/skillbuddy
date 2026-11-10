@@ -39,6 +39,8 @@ export type Mentor = {
   track: Category;
   bio: string;
   photo_url: string | null;
+  /** Vertical focus of the cropped photo: 0 = top, 50 = centre, 100 = bottom. */
+  photo_position_y: number;
   linkedin_url: string | null;
   published: boolean;
   sort_order: number;

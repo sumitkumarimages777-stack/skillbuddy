@@ -29,10 +29,10 @@ export const demoSettings: SiteSettings = {
 const id = (n: number) => `00000000-0000-4000-8000-${String(n).padStart(12, "0")}`;
 
 export const demoMentors: Mentor[] = [
-  { id: id(101), name: "[Mentor name]", role: "Senior Product Manager", company: "[Company]", track: "product", bio: "[One line on their background and products shipped.]", photo_url: null, linkedin_url: null, published: true, sort_order: 1 },
-  { id: id(102), name: "[Mentor name]", role: "Product Designer", company: "[Company]", track: "design", bio: "", photo_url: null, linkedin_url: null, published: true, sort_order: 2 },
-  { id: id(103), name: "[Mentor name]", role: "Data Analyst", company: "[Company]", track: "data", bio: "", photo_url: null, linkedin_url: null, published: true, sort_order: 3 },
-  { id: id(104), name: "[Mentor name]", role: "Growth Marketer", company: "[Company]", track: "marketing", bio: "", photo_url: null, linkedin_url: null, published: true, sort_order: 4 },
+  { id: id(101), name: "[Mentor name]", role: "Senior Product Manager", company: "[Company]", track: "product", bio: "[One line on their background and products shipped.]", photo_url: null, photo_position_y: 50, linkedin_url: null, published: true, sort_order: 1 },
+  { id: id(102), name: "[Mentor name]", role: "Product Designer", company: "[Company]", track: "design", bio: "", photo_url: null, photo_position_y: 50, linkedin_url: null, published: true, sort_order: 2 },
+  { id: id(103), name: "[Mentor name]", role: "Data Analyst", company: "[Company]", track: "data", bio: "", photo_url: null, photo_position_y: 50, linkedin_url: null, published: true, sort_order: 3 },
+  { id: id(104), name: "[Mentor name]", role: "Growth Marketer", company: "[Company]", track: "marketing", bio: "", photo_url: null, photo_position_y: 50, linkedin_url: null, published: true, sort_order: 4 },
 ];
 
 const weekendBatches = [

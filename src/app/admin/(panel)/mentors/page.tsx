@@ -24,7 +24,7 @@ export default async function MentorsPage() {
             <Link key={m.id} href={`/admin/mentors/${m.id}`} className="flex items-center gap-3 rounded-2xl border border-line bg-white p-4 text-ink no-underline hover:border-line-strong">
               {m.photo_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={m.photo_url} alt="" className="size-12 rounded-full object-cover" />
+                <img src={m.photo_url} alt="" className="size-12 rounded-full object-cover" style={{ objectPosition: `50% ${m.photo_position_y ?? 50}%` }} />
               ) : (
                 <div className="size-12 shrink-0 rounded-full bg-brand-soft" />
               )}

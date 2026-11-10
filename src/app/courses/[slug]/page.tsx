@@ -223,7 +223,7 @@ export default async function CoursePage({ params }: PageProps<"/courses/[slug]"
                   <div className="flex items-center gap-[18px] rounded-[18px] border border-line bg-paper p-6">
                     {mentor.photo_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={mentor.photo_url} alt={mentor.name} className="size-[88px] shrink-0 rounded-full object-cover" />
+                      <img src={mentor.photo_url} alt={mentor.name} className="size-[88px] shrink-0 rounded-full object-cover" style={{ objectPosition: `50% ${mentor.photo_position_y ?? 50}%` }} />
                     ) : (
                       <div className="flex size-[88px] shrink-0 items-center justify-center rounded-full bg-brand-soft text-xs font-semibold text-brand-dark">
                         Photo

@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
 import { ActionForm, ConfirmButton, SubmitButton } from "@/components/admin/action-form";
-import { Card, Checkbox, Field, Select, TextArea, TextInput, controlClass } from "@/components/admin/fields";
+import { Card, Checkbox, Select, TextArea, TextInput } from "@/components/admin/fields";
 import { PageHeader } from "@/components/admin/page-header";
+import { PhotoPositionField } from "@/components/admin/photo-position-field";
 import { isUuid } from "@/lib/admin/form";
 import { requireAdmin } from "@/lib/auth";
 import { CATEGORIES, type Mentor } from "@/lib/types";
@@ -13,7 +14,7 @@ export default async function EditMentorPage({ params }: PageProps<"/admin/mento
   const { id } = await params;
   const { supabase } = await requireAdmin();
   const isNew = id === "new";
-  let m: Partial<Mentor> = { track: "product", published: true, sort_order: 0 };
+  let m: Partial<Mentor> = { track: "product", published: true, sort_order: 0, photo_position_y: 50 };
   if (!isNew) {
     if (!isUuid(id)) notFound();
     const { data } = await supabase.from("mentors").select("*").eq("id", id).maybeSingle();
@@ -38,15 +39,7 @@ export default async function EditMentorPage({ params }: PageProps<"/admin/mento
             <TextInput label="Sort order" name="sort_order" type="number" defaultValue={s(m.sort_order)} />
           </div>
           <TextArea label="One-line bio" name="bio" rows={2} defaultValue={s(m.bio)} hint="Shown when this mentor leads a cohort." />
-          <div className="flex flex-wrap items-end gap-4">
-            {m.photo_url && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={m.photo_url} alt="" className="size-20 rounded-xl object-cover" />
-            )}
-            <Field label="Photo" hint="JPG, PNG or WebP, up to 4 MB." className="flex-1">
-              <input type="file" name="photo" accept="image/*" className={controlClass} />
-            </Field>
-          </div>
+          <PhotoPositionField photoUrl={m.photo_url ?? null} defaultPosition={m.photo_position_y ?? 50} />
           {m.photo_url && <Checkbox label="Remove current photo" name="remove_photo" />}
           <Checkbox label="Published" name="published" defaultChecked={m.published} hint="Show on the public site." />
         </Card>

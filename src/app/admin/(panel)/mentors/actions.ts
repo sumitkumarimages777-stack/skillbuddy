@@ -31,6 +31,7 @@ export async function saveMentor(_prev: ActionResult, fd: FormData): Promise<Act
     company: str(fd, "company", 120),
     bio: str(fd, "bio", 600),
     photo_url: photoUrl,
+    photo_position_y: Math.min(100, Math.max(0, int(fd, "photo_position_y") ?? 50)),
     linkedin_url: optStr(fd, "linkedin_url", 500),
     published: bool(fd, "published"),
     sort_order: int(fd, "sort_order") ?? 0,
