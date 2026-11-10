@@ -73,9 +73,6 @@ export default async function HomePage() {
             <a href="#courses" className="btn-primary rounded-xl px-6 py-4 text-base">
               Explore cohorts
             </a>
-            <a href="#counsellor" className="btn-outline rounded-xl px-6 py-4 text-base">
-              Book a free career call
-            </a>
           </div>
           <div className="flex flex-wrap gap-7 pt-2">
             <Stat value="Live" label="weekend classes" />

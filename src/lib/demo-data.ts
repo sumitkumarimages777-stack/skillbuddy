@@ -19,7 +19,7 @@ export const demoSettings: SiteSettings = {
   hero_title: "Learn ~~job~~ startup-ready skills in live cohorts, ((not recorded videos.))",
   hero_highlight: "live cohorts",
   hero_subtitle:
-    "Small-batch, mentor-led programs in Product, Design, Data, Marketing and AI. Learn live on weekends, build real projects, and get interview-ready while you're still in college.",
+    "Learn from the DUBuddy founding team, who built it through hands-on, practical learning.",
   max_batch_size: null,
   company_name: "Cyberflow Tech Private Limited",
   contact_email: null,
