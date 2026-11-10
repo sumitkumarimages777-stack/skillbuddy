@@ -33,7 +33,7 @@ export default async function CategoriesPage() {
             return (
               <Link
                 key={c.id}
-                href={`/admin/categories/${encodeURIComponent(c.id)}`}
+                href={`/admin/categories/${encodeURIComponent(c.id)}`} prefetch
                 className="flex items-center justify-between gap-3 rounded-2xl border border-line bg-white p-4 text-ink no-underline hover:border-line-strong"
               >
                 <span className="flex flex-col">

@@ -46,7 +46,7 @@ export default async function CoursesPage() {
               {courses.map((c) => (
                 <tr key={c.id} className="border-b border-line-soft last:border-0">
                   <td className="px-4 py-3">
-                    <Link href={`/admin/courses/${c.id}`} className="font-semibold text-ink no-underline hover:text-brand">
+                    <Link href={`/admin/courses/${c.id}`} prefetch className="font-semibold text-ink no-underline hover:text-brand">
                       {c.title}
                     </Link>
                     <div className="text-xs text-muted">
@@ -68,7 +68,7 @@ export default async function CoursesPage() {
                     </form>
                   </td>
                   <td className="px-4 py-3 text-right whitespace-nowrap">
-                    <Link href={`/admin/courses/${c.id}`} className="font-semibold">
+                    <Link href={`/admin/courses/${c.id}`} prefetch className="font-semibold">
                       Edit
                     </Link>
                     {c.published && (

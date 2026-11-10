@@ -16,14 +16,13 @@ export default async function EditMentorPage({ params }: PageProps<"/admin/mento
   const { id } = await params;
   const { supabase } = await requireAdmin();
   const isNew = id === "new";
-  let m: Partial<Mentor> = { published: true, sort_order: 0, photo_position_y: 50 };
-  if (!isNew) {
-    if (!isUuid(id)) notFound();
-    const { data } = await supabase.from("mentors").select("*").eq("id", id).maybeSingle();
-    if (!data) notFound();
-    m = data as Mentor;
-  }
-  const categories = await loadCategories(supabase);
+  if (!isNew && !isUuid(id)) notFound();
+  const [mentorRes, categories] = await Promise.all([
+    isNew ? null : supabase.from("mentors").select("*").eq("id", id).maybeSingle(),
+    loadCategories(supabase),
+  ]);
+  if (!isNew && !mentorRes?.data) notFound();
+  const m: Partial<Mentor> = isNew ? { published: true, sort_order: 0, photo_position_y: 50 } : (mentorRes!.data as Mentor);
   const s = (v: unknown) => (v == null ? "" : String(v));
 
   return (

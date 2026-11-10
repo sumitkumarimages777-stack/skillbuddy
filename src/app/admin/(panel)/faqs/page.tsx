@@ -17,7 +17,7 @@ export default async function FaqsPage() {
       ) : (
         <div className="flex flex-col gap-3">
           {faqs.map((f) => (
-            <Link key={f.id} href={`/admin/faqs/${f.id}`} className="flex flex-col gap-1 rounded-2xl border border-line bg-white p-4 text-ink no-underline hover:border-line-strong">
+            <Link key={f.id} href={`/admin/faqs/${f.id}`} prefetch className="flex flex-col gap-1 rounded-2xl border border-line bg-white p-4 text-ink no-underline hover:border-line-strong">
               <div className="flex items-center justify-between gap-2">
                 <span className="font-semibold">{f.question}</span>
                 <StatusBadge status={f.published ? "published" : "draft"} />

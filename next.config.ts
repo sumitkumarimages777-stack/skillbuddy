@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
   experimental: {
     // Allows mentor / project image uploads through server actions.
     serverActions: { bodySizeLimit: "5mb" },
+    // Keep recently visited pages in the browser for 30s so going back and forth
+    // in the admin is instant. Every admin save calls revalidatePath(), which clears it.
+    staleTimes: { dynamic: 30 },
   },
 };
 

@@ -21,7 +21,7 @@ export default async function ReviewsPage() {
       ) : (
         <div className="flex flex-col gap-3">
           {reviews.map((r) => (
-            <Link key={r.id} href={`/admin/reviews/${r.id}`} className="flex flex-col gap-2 rounded-2xl border border-line bg-white p-4 text-ink no-underline hover:border-line-strong">
+            <Link key={r.id} href={`/admin/reviews/${r.id}`} prefetch className="flex flex-col gap-2 rounded-2xl border border-line bg-white p-4 text-ink no-underline hover:border-line-strong">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <span className="font-semibold">
                   {r.learner_name}
