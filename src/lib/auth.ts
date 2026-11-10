@@ -1,9 +1,11 @@
 import "server-only";
 import { cache } from "react";
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { connection } from "next/server";
 import { isSupabaseConfigured } from "./supabase/env";
 import { createClient } from "./supabase/server";
+import { VERIFIED_USER_HEADER } from "./supabase/verified-user";
 
 /**
  * Verifies the current visitor is a signed-in admin, or redirects to the login page.
@@ -13,8 +15,10 @@ export const requireAdmin = cache(async () => {
   await connection(); // always render admin pages per request, never from a static cache
   if (!isSupabaseConfigured) redirect("/admin/login");
   const supabase = await createClient();
-  const { data } = await supabase.auth.getClaims();
-  const userId = data?.claims?.sub;
+  // The proxy has already validated the session on /admin routes; reuse its result.
+  // (Even if this header were forged, the profile query below runs under the
+  // visitor's real session and RLS only returns their own row.)
+  const userId = (await headers()).get(VERIFIED_USER_HEADER) ?? (await supabase.auth.getClaims()).data?.claims?.sub;
   if (!userId) redirect("/admin/login");
 
   const { data: profile } = await supabase
