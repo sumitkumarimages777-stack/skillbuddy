@@ -80,7 +80,7 @@ export default async function HomePage() {
         <div className="flex min-w-0 flex-[1_1_380px] flex-col gap-[18px] rounded-[20px] border border-line bg-white p-5 shadow-[0_20px_40px_-24px_rgba(15,18,34,0.25)] sm:p-7">
           <div className="flex items-center justify-between">
             <h2 className="font-display text-xl font-bold">Upcoming cohorts</h2>
-            <span className="rounded-full bg-brand-soft px-2.5 py-1 text-[13px] font-semibold text-brand-dark">Seats limited</span>
+            <span className="rounded-full bg-brand-soft px-2.5 py-1 text-[13px] font-semibold text-brand-dark">20 seats / cohort</span>
           </div>
           {upcoming.length === 0 && <p className="text-sm text-muted">New cohorts will be announced soon.</p>}
           {upcoming.map((u) => (
